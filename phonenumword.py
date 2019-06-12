@@ -3,18 +3,9 @@ import numpy as np
 sample = "15128670987";
 s_len = len(sample);
 
-t= open('translateddictionary.txt',"w+")
-with open('translateddictionary.txt') as t:
-    with open('dictionary.txt') as f:
-        for line in f:
-            result="";
-            temp_str = line;
-            for i in range(0,len(temp_str)-2):
-                result = result + txt_to_num(temp_str[i]);
-            breakpoint();
-            t.write(result);   
-    f.closed
-t.closed
+inputeng = "1800painter";
+inputnum = "1-800-724-6837";
+
 N = 2000; #Dictionary line number
 
 def txt_to_num(str):
@@ -34,10 +25,33 @@ def txt_to_num(str):
         return "8"
     else:
         return "9"
-def number_to_words(str):
 
+t= open('translateddictionary.txt',"w+");
+with open('translateddictionary.txt',"w+") as t:
+    with open('dictionary.txt',"r") as f:
+        for line in f:
+            result="";
+            temp_str = line;
+            for i in range(len(temp_str)-1):
+                result = result + txt_to_num(temp_str[i]);
+            result = result + "\n";
+            #breakpoint();
+            t.write(result);   
+    f.closed
+t.closed
+
+def number_to_words(str):
     return;
 def words_to_number(str):
-    return;
+    result = "";
+    for i in range(s_len):
+        if str[i].isalpha:
+            result = result + txt_to_num(str[i]);
+        else:
+            result = result + str[i];
+    return result;
 def all_wordification(str):        
     return;
+
+
+
