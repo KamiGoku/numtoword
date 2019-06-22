@@ -1,6 +1,6 @@
 import numpy as np
 
-sample = "15128670987";
+sample = "15665736799";
 s_len = len(sample);
 
 inputeng = "1800painter";
@@ -29,45 +29,39 @@ def txt_to_num(str):
 
 def look_up_dict(str):
     result = [];
-    with open('translateddictionary.txt',"r") as dictionary:
-        for index, line in enumerate(dictionary,0):
-            if str in line:
-                result.append(index);
-    dictionary.closed
+    if(len(str)>=4):
+        with open('translateddictionary.txt',"r") as dictionary:
+            for index, line in enumerate(dictionary,0):
+                if str == line:
+                    result.append(index);
+        dictionary.closed
     return result;
 
 def loop_through(str1,str2):
+    #breakpoint();
     if not str2: #check for empty string
+        #breakpoint();
         return;        
     else:
+        #breakpoint();
         for i in range(len(str2)):
-            indexes = look_up_dict(str2[0:i]+"\n");#find index of matching number strings
+            indexes = look_up_dict(str2[0:(i+1)]+"\n");#find index of matching number strings
+            #breakpoint();
             ##if not indexes: #not found in dict
             str1_new = str1 + str2[0:(i+1)];#add first 0 to i characterss
             str2_new = str2.replace(str2[0:(i+1)], '', 1); #remove first 0 to i characters
             loop_through(str1_new,str2_new);
             if indexes: #found in dict
+                #breakpoint();
                 words = [];
                 with open('dictionary.txt',"r") as f:#find the words based on the index
                     lines=f.readlines();
                     words = [lines[idx] for idx in indexes];
                 f.closed
-                List.append([str1 + w[0:(i+1)] + str2.replace(str2[0:(i+1)], '', 1) for w in words]);
+                List.extend([str1 + w[0:(i+1)] + str2.replace(str2[0:(i+1)], '', 1) for w in words]);
                 (loop_through(str1 + w[0:(i+1)],str2.replace(str2[0:(i+1)])) for w in words);
         return;
-##t= open('translateddictionary.txt',"w+");
-##with open('translateddictionary.txt',"w+") as t:
-##    with open('dictionary.txt',"r") as f:
-##        for line in f:
-##            result="";
-##            temp_str = line;
-##            for i in range(len(temp_str)-1): #ignoring the new line character
-##                result = result + txt_to_num(temp_str[i]);
-##            result = result + "\n";
-##            #breakpoint();
-##            t.write(result);   
-##    f.closed
-##t.closed
+
 
 def number_to_words(str):
     return;
@@ -85,8 +79,25 @@ def words_to_number(str):
 def all_wordification(str):
     List.clear();
     loop_through(str[0],str[1:len(str)])                       
+    #print(*List, sep = "\n");
     return;
-    print(*List, sep = "\n");
-                             
+
+###################################################################
+t= open('translateddictionary.txt',"w+");
+with open('translateddictionary.txt',"w+") as t:
+    with open('dictionary.txt',"r") as f:
+        for line in f:
+            result="";
+            temp_str = line;
+            for i in range(len(temp_str)-1): #ignoring the new line character
+                result = result + txt_to_num(temp_str[i]);
+            result = result + "\n";
+            #breakpoint();
+            t.write(result);   
+    f.closed
+t.closed
+#################################
 print(words_to_number(inputeng));
 all_wordification(sample);
+breakpoint();
+print("C = 9");
