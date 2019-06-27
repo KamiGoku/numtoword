@@ -1,9 +1,5 @@
 import random
 
-sample = "1-569-573-8700";
-inputeng = "1-800-painter";
-inputnum = "1-800-724-6837";
-
 List = [];
 
 ################################# Helper functions ######################################## 
@@ -13,7 +9,7 @@ def phone_to_num(str):
 
 def num_to_phone(str):
     #find word positions
-    indexdash = [idx for idx in [0,1,4,7] if str[idx].isnumeric()];#eliminate normal dash in the middle of words
+    indexdash = [idx for idx in [0,1,4,7] if str[idx].isnumeric()];#eliminate phone dash in the middle of words
     for i in range(1, len(str)):
         if (str[i].isnumeric() != str[i-1].isnumeric()):
             indexdash.append(i);
@@ -75,7 +71,10 @@ def loop_through(str1,str2):
         str2_new = str2.replace(str2[0], '', 1); #remove first character
         loop_through(str1_new,str2_new);
         for i in range(len(str2)):
-            indexes = look_up_dict(str2[0:(i+1)]+"\n",3);#find index of matching number strings
+            
+            indexes = look_up_dict(str2[0:(i+1)]+"\n",2);#find index of matching number strings,
+            #limit the minimum characters per word (the current value is 2) when looking up the dictionary can reduce run time significantly and elimite unnecessary combinations
+            
             if indexes: #found in dict
                 words = [];
                 with open('dictionary.txt',"r") as f:#find the words based on the index
@@ -106,18 +105,10 @@ def all_wordification(str):
     generate_dict(); #generate words to number string dictionary
     numstr = phone_to_num(str);
     List.clear();
-    loop_through(numstr[0],numstr[1:len(numstr)]);
+    loop_through(numstr[0],numstr[1:len(numstr)]); #recursion function 
     result = [num_to_phone(element) for element in List];
+    print("C = 9");
     return result;
 
 def number_to_words(str):
     return random.choice(all_wordification(str));
-
-generate_dict();
-print(words_to_number(inputeng));
-Answer = all_wordification(sample);
-##for element in Answer:
-##    print(num_to_phone(element));
-##Solution = number_to_words(sample);
-breakpoint();
-print("C = 9");
