@@ -101,7 +101,7 @@ def words_to_number(str):
     result = num_to_phone(result);
     return result;
 
-def all_wordification(str):
+def all_wordifications(str):
     generate_dict(); #generate words to number string dictionary
     numstr = phone_to_num(str);
     List.clear();
@@ -111,4 +111,4 @@ def all_wordification(str):
     return result;
 
 def number_to_words(str):
-    return random.choice(all_wordification(str));
+    return random.choice(all_wordifications(str));
