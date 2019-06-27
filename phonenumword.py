@@ -1,20 +1,26 @@
 import random
 
-sample = "15695738799";
-s_len = len(sample);
-
-inputeng = "1800painter";
-inputnum = "18007246837";
+sample = "1-569-573-8700";
+inputeng = "1-800-painter";
+inputnum = "1-800-724-6837";
 
 List = [];
-#N = 2000; #Dictionary line number
+
+################################# Helper functions ######################################## 
 
 def phone_to_num(str):
     return(str.replace('-',''));
 
 def num_to_phone(str):
-    
-    return;
+    #find word positions
+    indexdash = [idx for idx in [0,1,4,7] if str[idx].isnumeric()];#eliminate normal dash in the middle of words
+    for i in range(1, len(str)):
+        if (str[i].isnumeric() != str[i-1].isnumeric()):
+            indexdash.append(i);
+    indexdash = list(set(indexdash));
+    segs = [str[i:j] for i,j in zip(indexdash, indexdash[1:]+[None])];#index shift mapping
+    result = '-'.join(segs);
+    return result;
 
 def txt_to_num(str):
     if str in "abc":
@@ -83,21 +89,26 @@ def loop_through(str1,str2):
                     loop_through(str1_new, str2_new);
         return;
 
+################################## Main functions #########################################
+
 def words_to_number(str):
+    numstr = phone_to_num(str);
     result = "";
-    for i in range(s_len):
-        #breakpoint();
-        if str[i].isalpha():
-            result = result + txt_to_num(str[i]);
+    for i in range(len(numstr)):
+        if numstr[i].isalpha():
+            result = result + txt_to_num(numstr[i]);
         else:
-            result = result + str[i];
+            result = result + numstr[i];
+    result = num_to_phone(result);
     return result;
 
 def all_wordification(str):
+    generate_dict(); #generate words to number string dictionary
+    numstr = phone_to_num(str);
     List.clear();
-    loop_through(str[0],str[1:len(str)])                       
-    #print(*List, sep = "\n");
-    return List;
+    loop_through(numstr[0],numstr[1:len(numstr)]);
+    result = [num_to_phone(element) for element in List];
+    return result;
 
 def number_to_words(str):
     return random.choice(all_wordification(str));
@@ -105,6 +116,8 @@ def number_to_words(str):
 generate_dict();
 print(words_to_number(inputeng));
 Answer = all_wordification(sample);
-Solution = number_to_words(sample);
+##for element in Answer:
+##    print(num_to_phone(element));
+##Solution = number_to_words(sample);
 breakpoint();
 print("C = 9");
